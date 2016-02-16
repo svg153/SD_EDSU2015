@@ -133,9 +133,8 @@ function print_acciones_script {
 }
 
 function mostrar_ayuda {
-	clear
 	print_acciones_script
-	mostrar_uso
+	textto_uso
 	
 	echo "OPCIONES:"
 		print_opciones
