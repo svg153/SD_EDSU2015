@@ -229,21 +229,29 @@ case "$1" in
     	mostrar_uso
     	exit 1
         ;;
+    "--help")
+    	mostrar_uso
+    	exit 1
+        ;;
         
-    "--compile")
+    "-c" | "--compile")
         compilar_all
+        exit 0
         ;;
      
-    "--compile-in")
+    "-cin" | "--compile-in")
         compilar_intermediario
+        exit 0
         ;;
      
-    "--compile-ed")
-        compilar_editor
+    "-ced" | "--compile-ed")
+	compilar_editor
+        exit 0
         ;;
         
-    "--compile-su")
+    "-csu" | "--compile-su")
 		compilar_subcriptor
+		exit 0
         ;;
         
     *)
