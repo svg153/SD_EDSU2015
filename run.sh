@@ -127,10 +127,14 @@ function print_otras_opciones {
 	printf "\t${bold}-u or --update:${normal} Actualiza el script a la ultima version.\n"
 }
 
+function print_acciones_script {
+	printf "Compila y ejecuta los archivos: intermediario.c, subcriptor.c, editor.c.\n"
+	printf "Enviar los ficheros ${FICHEROS} a tu cuenta de triqui.fi.upm.es\n"
+}
+
 function mostrar_ayuda {
 	clear
-	printf "Compila y ejecuta los archivos: intermediario.c, subcriptor.c, editor.c."
-	printf "Compila y ejecuta los archivos: intermediario.c, subcriptor.c, editor.c."
+	print_acciones_script
 	mostrar_uso
 	
 	echo "OPCIONES:"
