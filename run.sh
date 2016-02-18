@@ -14,7 +14,7 @@ CUR_DIR="$(pwd)"
 bold=`tput bold`
 normal=`tput sgr0`
 
-H="Usage:  ${bold}$0 { -h | --help | --compile[-in|-ed|-su] }"
+USO="Usage:  ${bold}$0 { -h | --help | --compile[-in|-ed|-su] }"
 
 FICH_IN_IN=intermediario.c
 FICH_IN_CO=comun.c
@@ -45,7 +45,10 @@ FICH_SU_dir=./subscriptor/
 #FICHEROS_ENVIAR=./intermediario/intermediario.c ./intermediario/comun.c ./intermediario/comun.h ./subscriptor/subscriptor.c ./subscriptor/edsu_comun.c ./subscriptor/edsu_comun.h ./editor/editor.c
 
 
-
+CO="-c"
+COMP="--compile"
+HE="-h"
+HELP="--help"
 CIN="-cin"
 CINTER="--compile-intermediario"
 CSU="-csu"
@@ -108,7 +111,7 @@ function actualizar {
 
 
 function texto_uso {
-	echo "${H}\n"
+	echo "${USO}\n"
 }
 
 function mostrar_uso {
@@ -236,16 +239,16 @@ function aTriqui {
 
 
 case "$1" in
-	"-h")
+	"$HE")
     	mostrar_uso
     	exit 1
         ;;
-    "--help")
+    "$HELP")
     	mostrar_ayuda
     	exit 1
         ;;
         
-    "-c" | "--compile")
+    "$CO" | "$COMP")
         compilar_all
         exit 0
         ;;
