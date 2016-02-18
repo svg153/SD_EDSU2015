@@ -167,13 +167,13 @@ function compilar_intermediario {
 }
 
 function compilar_editor {
-	cd ./intermediario
+	cd ./editor
 	make
 	cd ..
 }
 
-function compilar_subcriptor {
-	cd ./intermediario
+function compilar_subscriptor {
+	cd ./subscriptor
 	make
 	cd ..
 }
