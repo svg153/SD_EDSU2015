@@ -7,13 +7,18 @@ NAME=$(basename $0)
 NM=$0
 AUTHOR="@svg153, @mrgarri, @roberseik (based on garquiscript.sh)"
 
+CUR_DIR="$(pwd)"
+bold=`tput bold`
+normal=`tput sgr0`
+
+
 UPDATE_source=
 EDSU2015_source=http://laurel.datsi.fi.upm.es/~ssoo/SD.dir/practicas/edsu.tgz
 EDSU2015_TRIQUI="@triqui3.fi.upm.es:~/DATSI/SD/EDSU.2015/"
 
-CUR_DIR="$(pwd)"
-bold=`tput bold`
-normal=`tput sgr0`
+
+FICH_TEMAS="fichero_temas"
+PUERTO=8000 
 
 FICH_IN_IN=intermediario.c
 FICH_IN_CO=comun.c
@@ -218,7 +223,7 @@ function compilar_all {
 
 function run_intermediario {
 	cd ./intermediario
-    ./intermediario
+    ./intermediario PUERTO FICH_TEMAS
 	cd ..
 }
 
