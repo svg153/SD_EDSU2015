@@ -20,14 +20,14 @@ FICH_IN_IN=intermediario.c
 FICH_IN_CO=comun.c
 FICH_IN_COh=comun.h
 FICH_IN_dir=./intermediario/
-FICH_IN={ ${FICH_IN_dir}${FICH_IN_*} } 
+#@TODO: FICH_IN={ ${FICH_IN_dir}${FICH_IN_*} } 
 # -> expanda variables para que salga "./intermediario/intermediario.c ./intermediario/comun.c ./intermediario/comun.h"
 
 FICH_ED_ED=editor.c
 FICH_ED_TEST=test_editor.sh
 FICH_ED_TEST_AVANZ=test_editor_avanz.sh
 FICH_ED_dir=./editor/
-FICH_ED={ ${FICH_ED_dir}${FICH_ED_ED} }
+#@TODO: FICH_ED={ ${FICH_ED_dir}${FICH_ED_ED} }
 
 FICH_SU_SU=subscriptor.c
 FICH_SU_edsuCO=edsu_comun.c
@@ -35,16 +35,23 @@ FICH_SU_edsuCOh=edsu_comun.h
 FICH_SU_TEST=test_subscriptor.sh
 FICH_SU_TEST_AVANZ=test_subscriptor_avanz.sh
 FICH_SU_dir=./subscriptor/
-FICH_SU={ ${FICH_SU_dir}${FICH_ED_ED} }
+#@TODO: FICH_SU={ ${FICH_SU_dir}${FICH_SU_SU} }
 
-FICHEROS_BASE={ ${FICH_IN_IN} ${FICH_ED_ED} ${FICH_SU_SU} }
+#@TODO: FICHEROS_BASE={ ${FICH_IN_IN} ${FICH_ED_ED} ${FICH_SU_SU} }
 
-FICHEROS_ENVIAR={ ${FICH_IN} ${FICH_ED} ${FICH_SU} }
-FICHEROS_TEST={ ${FICH_IN} ${FICH_ED} ${FICH_SU} }
-FICHEROS_TEST_AVAN={ ${FICH_IN} ${FICH_ED} ${FICH_SU} }
+#@TODO: FICHEROS_ENVIAR={ ${FICH_IN} ${FICH_ED} ${FICH_SU} }
+#@TODO: FICHEROS_TEST={ ${FICH_IN} ${FICH_ED} ${FICH_SU} }
+#@TODO: FICHEROS_TEST_AVAN={ ${FICH_IN} ${FICH_ED} ${FICH_SU} }
 #FICHEROS_ENVIAR=./intermediario/intermediario.c ./intermediario/comun.c ./intermediario/comun.h ./subscriptor/subscriptor.c ./subscriptor/edsu_comun.c ./subscriptor/edsu_comun.h ./editor/editor.c
 
 
+
+CIN="-cin"
+CINTER="--compile-intermediario"
+CSU="-csu"
+CSUBSC="--compile-subscriptor"
+CED="-ced"
+CEDITO="--compile-editor"
 
 
 
@@ -116,9 +123,9 @@ function print_opciones {
 	printf "\t${bold}-ra or --run-avanced:${normal} Ejecuta: intermediario.c, subcriptor.c, editor.c, abriendo 3 terminales.\n"
 	printf "\t${bold}-e or --send:${normal} Envia: los fichero: \"${FICHEROS_ENVIAR}\" a su cuenta de \"nMat@triqui3.fi.upm.es:~/DATSI/SD/EDSU.2015/\" .\n"
 	printf "\t${bold}-c or --compile:${normal} Compila: \"${FICH_BASE}\".\n"
-	printf "\t${bold}-cin or --compile-in:${normal} Compila: \"${FICH_IN_IN}\" .\n"
-	printf "\t${bold}-ced or --compile-ed:${normal} Compila: \"${FICH_ED_ED}\" .\n"
-	printf "\t${bold}-csu or --compile-su:${normal} Compila: \"${FICH_SU_SU}\" .\n"	
+	printf "\t${bold}$CIN or $CINTER:${normal} Compila: \"${FICH_IN_IN}\" .\n"
+	printf "\t${bold}$CED or $CEDITO:${normal} Compila: \"${FICH_ED_ED}\" .\n"
+	printf "\t${bold}$CSU or $CSUBSC:${normal} Compila: \"${FICH_SU_SU}\" .\n"	
 }
 
 function print_otras_opciones {
@@ -198,6 +205,7 @@ function enviar_aTriqui {
 			exit 1
 		else
 			printf "${bold}Por favor, introduca un caracter valido [Y/n].\n"
+		fi
 	done
 	
 	scp ${FICHEROS_ENVIAR} $USER@triqui3.fi.upm.es:~/DATSI/SD/EDSU.2015/
@@ -233,7 +241,7 @@ case "$1" in
     	exit 1
         ;;
     "--help")
-    	mostrar_uso
+    	mostrar_ayuda
     	exit 1
         ;;
         
@@ -242,17 +250,17 @@ case "$1" in
         exit 0
         ;;
      
-    "-cin" | "--compile-in")
+    "$CIN" | "$CINTER")
         compilar_intermediario
         exit 0
         ;;
-     
-    "-ced" | "--compile-ed")
-	compilar_editor
+       
+    "$CED" | "$CEDITO")
+	    compilar_editor
         exit 0
         ;;
         
-    "-csu" | "--compile-su")
+    "$CSU" | "$CSUBSC")
 		compilar_subcriptor
 		exit 0
         ;;
