@@ -223,7 +223,7 @@ function compilar_all {
 
 function run_intermediario {
 	cd ./intermediario
-    ./intermediario PUERTO FICH_TEMAS
+    ./intermediario $PUERTO $FICH_TEMAS
 	cd ..
 }
 
