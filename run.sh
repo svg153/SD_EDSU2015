@@ -9,13 +9,11 @@ AUTHOR="@svg153, @mrgarri, @roberseik (based on garquiscript.sh)"
 
 UPDATE_source=
 EDSU2015_source=http://laurel.datsi.fi.upm.es/~ssoo/SD.dir/practicas/edsu.tgz
-EDSU2015_TRIQUI"@triqui3.fi.upm.es:~/DATSI/SD/EDSU.2015/"
+EDSU2015_TRIQUI="@triqui3.fi.upm.es:~/DATSI/SD/EDSU.2015/"
 
 CUR_DIR="$(pwd)"
 bold=`tput bold`
 normal=`tput sgr0`
-
-USO="Usage:  ${bold}$0 { -h | --help | --compile[-in|-ed|-su] }"
 
 FICH_IN_IN=intermediario.c
 FICH_IN_CO=comun.c
@@ -60,15 +58,18 @@ CEDITO="--compile-editor"
 
 R="-r"
 RUN="--run"
-RA="-ra"
-RAVANC="--run-avanced"
 RIN="-rin"
 RINTER="--run-intermediario"
 RSU="-rsu"
 RSUBSC="--run-subscriptor"
 RED="-red"
 REDITO="--run-editor"
-
+RA="-ra"
+RAVANC="--run-avanced"
+RASU="-rasu"
+RASUBSC="--run-avanced-subscriptor"
+RAED="-raed"
+RAEDITO="--run-avanced-editor"
 
 
 #### Comando para poder renombrar las tabs de guake
@@ -124,7 +125,7 @@ function actualizar {
 
 
 function texto_uso {
-	echo "${USO}\n"
+	printf "Usage:  ${bold}$0 { -h | -c[in|ed|su] | -r[in|ed|su] | -ra[in|ed|su] }${normal}\n"
 }
 
 function mostrar_uso {
@@ -135,18 +136,19 @@ function mostrar_uso {
 
 
 function print_opciones {
-	
 	printf "\t${bold}$CO or $COMP:${normal} Compila: \"${FICH_BASE}\".\n"
 	printf "\t${bold}$CIN or $CINTER:${normal} Compila: \"${FICH_IN_IN}\" .\n"
 	printf "\t${bold}$CED or $CEDITO:${normal} Compila: \"${FICH_ED_ED}\" .\n"
 	printf "\t${bold}$CSU or $CSUBSC:${normal} Compila: \"${FICH_SU_SU}\" .\n"	
-
-	printf "\t${bold}$R or $R:${normal} Ejecuta: ..... .\n"
-	printf "\t${bold}$RA or $RAVANC:${normal} Ejecuta: intermediario.c, subcriptor.c, editor.c, abriendo 3 terminales.\n"
-	printf "\t${bold}$RIN or $RINTER:${normal} Ejecuta: \"${FICH_IN_IN}\" .\n"
-	printf "\t${bold}$RED or $REDITO:${normal} Ejecuta: \"${FICH_ED_ED}\" .\n"
-	printf "\t${bold}$RSU or $RSUBSC:${normal} Ejecuta: \"${FICH_SU_SU}\" .\n"	    
-
+	printf "\n"
+	printf "\t${bold}$R or $R:${normal} Compila y ejecuta: ..... .\n"
+	printf "\t${bold}$RIN or $RINTER:${normal} Compila y ejecuta: \"${FICH_IN_IN}\" .\n"
+	printf "\t${bold}$RED or $REDITO:${normal} Compila y ejecuta: \"${FICH_ED_TEST}\" .\n"
+	printf "\t${bold}$RSU or $RSUBSC:${normal} Compila y ejecuta: \"${FICH_SU_TEST}\" .\n"	    
+   	printf "\t${bold}$RA or $RAVANC:${normal} Compila y ejecuta: intermediario.c, subcriptor.c, editor.c, abriendo 3 terminales.\n"
+	printf "\t${bold}$RAED or $RAEDITO:${normal} Compila y ejecuta: \"${FICH_ED_TEST_AVANZ}\" .\n"
+	printf "\t${bold}$RASU or $RASUBSC:${normal} Compila y ejecuta: \"${FICH_SU_TEST_AVANZ}\" .\n"	 
+    printf "\n"
 	printf "\t${bold}-e or --send:${normal} Envia: los fichero: \"${FICHEROS_ENVIAR}\" a su cuenta de \"nMat$EDSU_TRIQUI\" .\n"
 }
 
@@ -157,20 +159,30 @@ function print_otras_opciones {
 }
 
 function print_acciones_script {
-	printf "Compila y ejecuta los archivos: intermediario.c, subcriptor.c, editor.c.\n"
-	printf "Enviar los ficheros ${FICHEROS} a tu cuenta de triqui.fi.upm.es\n"
+	printf "ACCIONES:\n"
+	printf ${bold}
+	printf " * Compila y ejecuta los archivos: intermediario.c, subcriptor.c, editor.c\n"
+	printf " * Enviar a tu cuenta de triqui.fi.upm.es, los ficheros: ${FICHEROS}\n"
+    printf " * Realiza en triqui.fi.upm.es la entrega de EDSU.2015, con los ${FICHEROS_ENTREGA}\n"
+	printf ${normal}
+}
+
+function print_nombre {
+	printf "${bold} $NAME ${normal} \n"
 }
 
 function mostrar_ayuda {
 	print_acciones_script
-	textto_uso
+	printf "\n"
+	texto_uso
+	printf "\n"
 	
-	echo "OPCIONES:"
+	printf "OPCIONES:\n"
 		print_opciones
 		printf "\n"
 		
-	echo "Otras opciones:"
-		print_opciones
+	printf "Otras opciones:\n"
+		print_otras_opciones
 		printf "\n"
 	
 	printf "You can ask my cat now how this script works and she'll just meaow you.\n"
@@ -201,6 +213,49 @@ function compilar_all {
 	compilar_intermediario
 	compilar_editor
 	compilar_subcriptor
+}
+
+
+function run_intermediario {
+	cd ./intermediario
+    ./intermediario
+	cd ..
+}
+
+function run_editor {
+	cd ./editor
+	./test_editor
+	cd ..
+}
+
+function run_subscriptor {
+	cd ./subscriptor
+	./test_subscriptor
+	cd ..
+}
+
+function run_all {
+	run_intermediario
+	run_editor
+	run_subcriptor
+}
+
+function run_avanced_editor {
+	cd ./editor
+	./test_editor_avanz
+	cd ..
+}
+
+function run_avanced_subscriptor {
+	cd ./subscriptor
+	./test_subscriptor_avanz
+	cd ..
+}
+
+function run_avanced_all {
+	run_avanced_intermediario
+	run_avanced_editor
+	run_avanced_subcriptor
 }
 
 
@@ -254,8 +309,9 @@ function aTriqui {
 	
 }
 
-
-
+################################################
+# ------ MAIN
+################################################
 
 case "$1" in
 	"$HE")
@@ -288,27 +344,57 @@ case "$1" in
 		exit 0
         ;;
         
-# # ------ RUN
+# ------ RUN
     "$R" | "$RUN")
+        compilar_all
+        run_all
         exit 0
         ;;
      
     "$RIN" | "$RINTER")
+        compilar_intermediario
+        run_intermediario
         exit 0
         ;;
        
     "$RED" | "$REDITO")
+        compilar_editor
+        run_editor
         exit 0
         ;;
         
     "$RSU" | "$RSUBSC")
+        compilar_subscriptor
+        run_subscriptor
 		exit 0
         ;;
+
+# ------ RUN AVANCED
+    "$RA" | "$RAVANC")
+        compilar_all
+        run_avanced_all
+        exit 0
+        ;;
+        
+    "$RAED" | "$RAEDITO")
+        compilar_editor
+        run_avanced_editor
+        exit 0
+        ;;
+        
+    "$RASU" | "$RASUBSC")
+        compilar_subscriptor
+        run_avanced_subscriptor
+		exit 0
+        ;;        
+
     *)
         mostrar_ayuda
         exit 1
         
 esac
 
-
+################################################
+# ------ MAIN
+################################################
 
