@@ -8,7 +8,8 @@ NM=$0
 AUTHOR="@svg153, @mrgarri, @roberseik (based on garquiscript.sh)"
 
 UPDATE_source=
-EDSU1516_source=http://laurel.datsi.fi.upm.es/~ssoo/SD.dir/practicas/edsu.tgz
+EDSU2015_source=http://laurel.datsi.fi.upm.es/~ssoo/SD.dir/practicas/edsu.tgz
+EDSU2015_TRIQUI"@triqui3.fi.upm.es:~/DATSI/SD/EDSU.2015/"
 
 CUR_DIR="$(pwd)"
 bold=`tput bold`
@@ -45,16 +46,28 @@ FICH_SU_dir=./subscriptor/
 #FICHEROS_ENVIAR=./intermediario/intermediario.c ./intermediario/comun.c ./intermediario/comun.h ./subscriptor/subscriptor.c ./subscriptor/edsu_comun.c ./subscriptor/edsu_comun.h ./editor/editor.c
 
 
-CO="-c"
-COMP="--compile"
 HE="-h"
 HELP="--help"
+
+CO="-c"
+COMP="--compile"
 CIN="-cin"
 CINTER="--compile-intermediario"
 CSU="-csu"
 CSUBSC="--compile-subscriptor"
 CED="-ced"
 CEDITO="--compile-editor"
+
+R="-r"
+RUN="--run"
+RA="-ra"
+RAVANC="--run-avanced"
+RIN="-rin"
+RINTER="--run-intermediario"
+RSU="-rsu"
+RSUBSC="--run-subscriptor"
+RED="-red"
+REDITO="--run-editor"
 
 
 
@@ -122,13 +135,19 @@ function mostrar_uso {
 
 
 function print_opciones {
-	printf "\t${bold}-r or --run:${normal} Ejecuta: , abriendo 2 terminales.\n"
-	printf "\t${bold}-ra or --run-avanced:${normal} Ejecuta: intermediario.c, subcriptor.c, editor.c, abriendo 3 terminales.\n"
-	printf "\t${bold}-e or --send:${normal} Envia: los fichero: \"${FICHEROS_ENVIAR}\" a su cuenta de \"nMat@triqui3.fi.upm.es:~/DATSI/SD/EDSU.2015/\" .\n"
-	printf "\t${bold}-c or --compile:${normal} Compila: \"${FICH_BASE}\".\n"
+	
+	printf "\t${bold}$CO or $COMP:${normal} Compila: \"${FICH_BASE}\".\n"
 	printf "\t${bold}$CIN or $CINTER:${normal} Compila: \"${FICH_IN_IN}\" .\n"
 	printf "\t${bold}$CED or $CEDITO:${normal} Compila: \"${FICH_ED_ED}\" .\n"
 	printf "\t${bold}$CSU or $CSUBSC:${normal} Compila: \"${FICH_SU_SU}\" .\n"	
+
+	printf "\t${bold}$R or $R:${normal} Ejecuta: ..... .\n"
+	printf "\t${bold}$RA or $RAVANC:${normal} Ejecuta: intermediario.c, subcriptor.c, editor.c, abriendo 3 terminales.\n"
+	printf "\t${bold}$RIN or $RINTER:${normal} Ejecuta: \"${FICH_IN_IN}\" .\n"
+	printf "\t${bold}$RED or $REDITO:${normal} Ejecuta: \"${FICH_ED_ED}\" .\n"
+	printf "\t${bold}$RSU or $RSUBSC:${normal} Ejecuta: \"${FICH_SU_SU}\" .\n"	    
+
+	printf "\t${bold}-e or --send:${normal} Envia: los fichero: \"${FICHEROS_ENVIAR}\" a su cuenta de \"nMat$EDSU_TRIQUI\" .\n"
 }
 
 function print_otras_opciones {
@@ -248,6 +267,7 @@ case "$1" in
     	exit 1
         ;;
         
+# ------ COMPILE
     "$CO" | "$COMP")
         compilar_all
         exit 0
@@ -268,6 +288,22 @@ case "$1" in
 		exit 0
         ;;
         
+# # ------ RUN
+    "$R" | "$RUN")
+        exit 0
+        ;;
+     
+    "$RIN" | "$RINTER")
+        exit 0
+        ;;
+       
+    "$RED" | "$REDITO")
+        exit 0
+        ;;
+        
+    "$RSU" | "$RSUBSC")
+		exit 0
+        ;;
     *)
         mostrar_ayuda
         exit 1
