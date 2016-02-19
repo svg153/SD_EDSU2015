@@ -18,7 +18,9 @@ EDSU2015_TRIQUI="@triqui3.fi.upm.es:~/DATSI/SD/EDSU.2015/"
 
 
 FICH_TEMAS="fichero_temas"
-PUERTO=8000 
+PUERTO_IN=8000
+PUERTO_EDSU=9000
+SERVIDOR=localhost
 
 FICH_IN_IN=intermediario.c
 FICH_IN_CO=comun.c
@@ -221,9 +223,50 @@ function compilar_all {
 }
 
 
+function run_guake_intermediario {
+	guake -s 1 --execute-command="./intermediario $PUERTO_IN $FICH_TEMAS"
+}
+
+function run_guake_export {
+	#guake -s 2 --execute-command="export PUERTO=$PUERTO_EDSU"
+	#guake -s 2 --execute-command="export PUERTO=$SERVIDOR"
+}
+
+function run_guake_editor {
+	#run_guake_export(2)
+	guake -s 2 --execute-command="export PUERTO=$PUERTO_EDSU"
+	guake -s 2 --execute-command="export PUERTO=$SERVIDOR"
+	guake -s 2 --execute-command="./test_editor"
+}
+#@TODO: cambiar para que sea una sola "run_guake_edsu(fichero, idVentana)"
+function run_guake_subscriptor {
+	#run_guake_export(3)
+	guake -s 3 --execute-command="export PUERTO=$PUERTO_EDSU"
+	guake -s 3 --execute-command="export PUERTO=$SERVIDOR"
+	guake -s 3 --execute-command="./test_subscriptor"
+}
+
+function run_guake {
+	run_guake_intermediario
+	run_guake_editor
+	run_guake_subscriptor
+}
+function run_guake {
+	run_guake_intermediario
+	run_guake_editor
+	run_guake_subscriptor
+}
+
+function levantar_guake {
+	guake -n "tab1" -r editor --execute-command="cd \"$route/editor\""
+	guake -n "tab2" -r intermediario --execute-command="cd \"$route/intermediario\""
+	guake -n "tab3" -r subscriptor --execute-command="cd \"$route/subscriptor\""
+}
+
+
 function run_intermediario {
 	cd ./intermediario
-    ./intermediario $PUERTO $FICH_TEMAS
+    ./intermediario $PUERTO_IN $FICH_TEMAS
 	cd ..
 }
 
@@ -241,6 +284,7 @@ function run_subscriptor {
 
 function run_all {
 	levantar_guake
+	run_guake
 }
 
 function run_avanced_editor {
@@ -257,22 +301,7 @@ function run_avanced_subscriptor {
 
 function run_avanced_all {
 	levantar_guake
-}
-
-function run_guake {
-	guake -s 1 --execute-command="export PUERTO=$2"
-	guake -s 1 --execute-command="export PUERTO=localhost"
-	guake -s 1 --execute-command="./test_editor"
-	guake -s 2 --execute-command="./intermediario 8000 fichero_temas"
-	guake -s 3 --execute-command="export PUERTO=$2"
-	guake -s 3 --execute-command="export PUERTO=localhost"
-	guake -s 3 --execute-command="./test_subscriptor"
-}
-
-function levantar_guake {
-	guake -n "tab1" -r editor --execute-command="cd \"$route/editor\""
-	guake -n "tab2" -r intermediario --execute-command="cd \"$route/intermediario\""
-	guake -n "tab3" -r subscriptor --execute-command="cd \"$route/subscriptor\""
+	run_guake_avanced
 }
 
 function print_info_envio {
