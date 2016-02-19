@@ -137,7 +137,6 @@ function texto_uso {
 
 function mostrar_uso {
 	texto_uso
-    exit 1
 }
 
 
@@ -193,9 +192,7 @@ function mostrar_ayuda {
 		printf "\n"
 	
 	printf "You can ask my cat now how this script works and she'll just meaow you.\n"
-	printf "\n"
-	
-	exit 1	
+	printf "\n"	
 }
 
 function compilar_intermediario {
@@ -228,8 +225,8 @@ function run_guake_intermediario {
 }
 
 function run_guake_export {
-	#guake -s 2 --execute-command="export PUERTO=$PUERTO_EDSU"
-	#guake -s 2 --execute-command="export PUERTO=$SERVIDOR"
+	guake -s 2 --execute-command="export PUERTO=$PUERTO_EDSU"
+	guake -s 2 --execute-command="export PUERTO=$SERVIDOR"
 }
 
 function run_guake_editor {
@@ -238,6 +235,7 @@ function run_guake_editor {
 	guake -s 2 --execute-command="export PUERTO=$SERVIDOR"
 	guake -s 2 --execute-command="./test_editor"
 }
+
 #@TODO: cambiar para que sea una sola "run_guake_edsu(fichero, idVentana)"
 function run_guake_subscriptor {
 	#run_guake_export(3)
@@ -324,7 +322,7 @@ function enviar_aTriqui {
 			printf "${bold}No se realizara el envio.\n"
 			printf "Se cerrara el script.\n"
 			printf "Adios.\n"
-			exit 1
+			exit 0
 		else
 			printf "${bold}Por favor, introduca un caracter valido [Y/n].\n"
 		fi
@@ -342,7 +340,7 @@ function aTriqui {
 			printf "${bold}No se realizara el envio.\n"
 			printf "Se cerrara el script.\n"
 			printf "Adios.\n"
-			exit 1		
+			exit 0	
 		elif [[ $input == "Y" || $input == "y" ]] ; then
 			enviar_aTriqui
 		else
@@ -361,11 +359,11 @@ function aTriqui {
 case "$1" in
 	"$HE")
     	mostrar_uso
-    	exit 1
+    	exit 0
         ;;
     "$HELP")
     	mostrar_ayuda
-    	exit 1
+    	exit 0
         ;;
         
 # ------ COMPILE
@@ -435,7 +433,7 @@ case "$1" in
 
     *)
         mostrar_ayuda
-        exit 1
+        exit 0
         
 esac
 
