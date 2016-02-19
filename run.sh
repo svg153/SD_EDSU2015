@@ -240,9 +240,7 @@ function run_subscriptor {
 }
 
 function run_all {
-	run_intermediario
-	run_editor
-	run_subcriptor
+	levantar_guake
 }
 
 function run_avanced_editor {
@@ -258,11 +256,24 @@ function run_avanced_subscriptor {
 }
 
 function run_avanced_all {
-	run_avanced_intermediario
-	run_avanced_editor
-	run_avanced_subcriptor
+	levantar_guake
 }
 
+function run_guake {
+	guake -s 1 --execute-command="export PUERTO=$2"
+	guake -s 1 --execute-command="export PUERTO=localhost"
+	guake -s 1 --execute-command="./test_editor"
+	guake -s 2 --execute-command="./intermediario 8000 fichero_temas"
+	guake -s 3 --execute-command="export PUERTO=$2"
+	guake -s 3 --execute-command="export PUERTO=localhost"
+	guake -s 3 --execute-command="./test_subscriptor"
+}
+
+function levantar_guake {
+	guake -n "tab1" -r editor --execute-command="cd \"$route/editor\""
+	guake -n "tab2" -r intermediario --execute-command="cd \"$route/intermediario\""
+	guake -n "tab3" -r subscriptor --execute-command="cd \"$route/subscriptor\""
+}
 
 function print_info_envio {
 	printf "Se van a enviar los ficheros:\n"
