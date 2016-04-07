@@ -5,41 +5,41 @@
 VERSION=0.1
 NAME=$(basename $0)
 NM=$0
-AUTHOR="@svg153, @mrgarri, @roberseik (based on garquiscript.sh)"
+AUTHOR="@svg153, @mrgarri, @roberseik (based on garquiscript.sh by @mrgarri)"
 
 CUR_DIR="$(pwd)"
 bold=`tput bold`
 normal=`tput sgr0`
 
 
-UPDATE_source=
+UPDATE_source=https://raw.githubusercontent.com/svg153/SD_EDSU2015/master/run.sh
 EDSU2015_source=http://laurel.datsi.fi.upm.es/~ssoo/SD.dir/practicas/edsu.tgz
 EDSU2015_TRIQUI="@triqui3.fi.upm.es:~/DATSI/SD/EDSU.2015/"
 
 
 FICH_TEMAS="fichero_temas"
 PUERTO_IN=8000
-PUERTO_EDSU=9000
+PUERTO_EDSU=$PUERTO_IN
 SERVIDOR=localhost
 
 FICH_IN_IN=intermediario.c
 FICH_IN_CO=comun.c
 FICH_IN_COh=comun.h
 FICH_IN_dir=./intermediario/
-#@TODO: FICH_IN={ ${FICH_IN_dir}${FICH_IN_*} } 
+#@TODO: FICH_IN=( ${${FICH_IN_dir}${FICH_IN_IN}} ${${FICH_IN_dir}${FICH_IN_CO}} ${${FICH_IN_dir}${FICH_IN_COh}}   )
 # -> expanda variables para que salga "./intermediario/intermediario.c ./intermediario/comun.c ./intermediario/comun.h"
 
 FICH_ED_ED=editor.c
-FICH_ED_TEST=test_editor.sh
-FICH_ED_TEST_AVANZ=test_editor_avanz.sh
+FICH_ED_TEST=test_editor.c
+FICH_ED_TEST_AVANZ=test_editor_avanz.c
 FICH_ED_dir=./editor/
-#@TODO: FICH_ED={ ${FICH_ED_dir}${FICH_ED_ED} }
+#@TODO: FICH_ED=( ${${FICH_ED_dir}${FICH_ED_ED}} ${${FICH_ED_dir}${FICH_ED_CO}} ${${FICH_ED_dir}${FICH_IN_COh}}   )
 
 FICH_SU_SU=subscriptor.c
 FICH_SU_edsuCO=edsu_comun.c
 FICH_SU_edsuCOh=edsu_comun.h
-FICH_SU_TEST=test_subscriptor.sh
-FICH_SU_TEST_AVANZ=test_subscriptor_avanz.sh
+FICH_SU_TEST=test_subscriptor.c
+FICH_SU_TEST_AVANZ=test_subscriptor_avanz.c
 FICH_SU_dir=./subscriptor/
 #@TODO: FICH_SU={ ${FICH_SU_dir}${FICH_SU_SU} }
 
@@ -48,11 +48,15 @@ FICH_SU_dir=./subscriptor/
 #@TODO: FICHEROS_ENVIAR={ ${FICH_IN} ${FICH_ED} ${FICH_SU} }
 #@TODO: FICHEROS_TEST={ ${FICH_IN} ${FICH_ED} ${FICH_SU} }
 #@TODO: FICHEROS_TEST_AVAN={ ${FICH_IN} ${FICH_ED} ${FICH_SU} }
-#FICHEROS_ENVIAR=./intermediario/intermediario.c ./intermediario/comun.c ./intermediario/comun.h ./subscriptor/subscriptor.c ./subscriptor/edsu_comun.c ./subscriptor/edsu_comun.h ./editor/editor.c
+#FICHEROS_ENVIAR=./intermediario/intermediario.c ./intermediario/comun.c ./intermediario/comun.h ./subscriptor/subscriptor.c ./subscriptor/edsu_comun.c ./subscriptor/edsu_comun.h ./editor/editor.c ./autores ./memoria.txt
 
 
 HE="-h"
 HELP="--help"
+V="-v"
+VER="--version"
+U="-u"
+UPD="--update"
 
 CO="-c"
 COMP="--compile"
@@ -100,7 +104,7 @@ function download {
 		do
 			mostrar_descargando
 	done
-	printf "\rDone!                    \n"
+	printf "\rDone!\n"
 }
 
 function actualizar {
@@ -159,9 +163,9 @@ function print_opciones {
 }
 
 function print_otras_opciones {
-	printf "\t${bold}-h or --help:${normal} Muestra el texto de uso o ayuda.\n"
-	printf "\t${bold}-v or --version:${normal} Muestra la version actual del script.\n"
-	printf "\t${bold}-u or --update:${normal} Actualiza el script a la ultima version.\n"
+	printf "\t${bold}$H or $HELP:${normal} Muestra el texto de uso o ayuda.\n"
+	printf "\t${bold}$V or $VER:${normal} Muestra la version actual del script.\n"
+	printf "\t${bold}$U or $UPD:${normal} Actualiza el script a la ultima version.\n"
 }
 
 function print_acciones_script {
@@ -216,7 +220,7 @@ function compilar_subscriptor {
 function compilar_all {
 	compilar_intermediario
 	compilar_editor
-	compilar_subcriptor
+	compilar_subscriptor
 }
 
 
@@ -224,31 +228,32 @@ function run_guake_intermediario {
 	guake -s 1 --execute-command="./intermediario $PUERTO_IN $FICH_TEMAS"
 }
 
+function export_vars {
+	export PUERTO=$PUERTO_EDSU
+	export SERVIDOR=$SERVIDOR
+}
+
+#@TODO: cambiar para que sea una sola "run_guake(idVentana)"
 function run_guake_export {
+	guake -s 2 --execute-command="export SERVIDOR=$SERVIDOR"
 	guake -s 2 --execute-command="export PUERTO=$PUERTO_EDSU"
-	guake -s 2 --execute-command="export PUERTO=$SERVIDOR"
 }
 
 function run_guake_editor {
 	#run_guake_export(2)
+	guake -s 2 --execute-command="export SERVIDOR=$SERVIDOR"
 	guake -s 2 --execute-command="export PUERTO=$PUERTO_EDSU"
-	guake -s 2 --execute-command="export PUERTO=$SERVIDOR"
 	guake -s 2 --execute-command="./test_editor"
 }
 
 #@TODO: cambiar para que sea una sola "run_guake_edsu(fichero, idVentana)"
 function run_guake_subscriptor {
 	#run_guake_export(3)
-	guake -s 3 --execute-command="export PUERTO=$PUERTO_EDSU"
-	guake -s 3 --execute-command="export PUERTO=$SERVIDOR"
+    guake -s 2 --execute-command="export SERVIDOR=$SERVIDOR"
+	guake -s 2 --execute-command="export PUERTO=$PUERTO_EDSU"
 	guake -s 3 --execute-command="./test_subscriptor"
 }
 
-function run_guake {
-	run_guake_intermediario
-	run_guake_editor
-	run_guake_subscriptor
-}
 function run_guake {
 	run_guake_intermediario
 	run_guake_editor
@@ -269,12 +274,14 @@ function run_intermediario {
 }
 
 function run_editor {
+    export_vars
 	cd ./editor
 	./test_editor
 	cd ..
 }
 
 function run_subscriptor {
+    export_vars
 	cd ./subscriptor
 	./test_subscriptor
 	cd ..
@@ -286,12 +293,14 @@ function run_all {
 }
 
 function run_avanced_editor {
+    export_vars
 	cd ./editor
 	./test_editor_avanz
 	cd ..
 }
 
 function run_avanced_subscriptor {
+    export_vars
 	cd ./subscriptor
 	./test_subscriptor_avanz
 	cd ..
@@ -365,6 +374,26 @@ case "$1" in
     	mostrar_ayuda
     	exit 0
         ;;
+    "$V")
+#@TODO: Hacer la funcion
+    	mostrar_uso
+    	exit 0
+        ;;
+    "$VER")
+#@TODO: Hacer la funcion
+    	mostrar_ayuda
+    	exit 0
+        ;;
+    "$U")
+#@TODO: Hacer la funcion
+    	mostrar_uso
+    	exit 0
+        ;;
+    "$UPD")
+#@TODO: Hacer la funcion
+    	mostrar_ayuda
+    	exit 0
+        ;;
         
 # ------ COMPILE
     "$CO" | "$COMP")
@@ -383,7 +412,7 @@ case "$1" in
         ;;
         
     "$CSU" | "$CSUBSC")
-		compilar_subcriptor
+		compilar_subscriptor
 		exit 0
         ;;
         
