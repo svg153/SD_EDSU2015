@@ -136,7 +136,7 @@ function actualizar {
 
 
 function texto_uso {
-	printf "Usage:  ${bold}$0 { -h | -c[in|ed|su] | -r[in|ed|su] | -ra[in|ed|su] }${normal}\n"
+	printf "Usage:  ${bold}$0 { $H | $HELP | -c[in|ed|su] | -r[in|ed|su] | -ra[in|ed|su] }${normal}\n"
 }
 
 function mostrar_uso {
@@ -163,9 +163,9 @@ function print_opciones {
 }
 
 function print_otras_opciones {
-	printf "\t${bold}$H or $HELP:${normal} Muestra el texto de uso o ayuda.\n"
-	printf "\t${bold}$V or $VER:${normal} Muestra la version actual del script.\n"
-	printf "\t${bold}$U or $UPD:${normal} Actualiza el script a la ultima version.\n"
+	printf "\t${bold}$H or $HELP:${normal} Shows help text.\n"
+	printf "\t${bold}$V or $VER:${normal} Shows actual version of the script.\n"
+	printf "\t${bold}$U or $UPD:${normal} Auto-updates the script to the latest version.\n"
 }
 
 function print_acciones_script {
@@ -201,19 +201,19 @@ function mostrar_ayuda {
 
 function compilar_intermediario {
 	cd ./intermediario
-	make
+	make -B #forzar el make siempre
 	cd ..
 }
 
 function compilar_editor {
 	cd ./editor
-	make
+	make -B
 	cd ..
 }
 
 function compilar_subscriptor {
 	cd ./subscriptor
-	make
+	make -B
 	cd ..
 }
 
